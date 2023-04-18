@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MyGame.Model;
 
 namespace MyGame;
 
@@ -8,6 +10,7 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private SplashScreen _splashScreen;
 
     public Game1()
     {
@@ -19,7 +22,6 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-
         base.Initialize();
     }
 
@@ -27,7 +29,7 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        _splashScreen = new SplashScreen(Content);
     }
 
     protected override void Update(GameTime gameTime)
@@ -36,7 +38,7 @@ public class Game1 : Game
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
+        _splashScreen.Update(gameTime);
 
         base.Update(gameTime);
     }
@@ -45,7 +47,11 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        // TODO: Add your drawing code here
+        _spriteBatch.Begin();
+
+        _splashScreen.Draw(gameTime, _spriteBatch);
+
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
