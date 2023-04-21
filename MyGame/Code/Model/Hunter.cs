@@ -4,15 +4,18 @@ namespace MyGame.Model;
 
 public class Hunter : ICreature
 {
+    public string AssetName { get; }
     public string Name => "Hunter";
+    public Vector2 Position { get;  set; }
+    public Vector2 HorizontalShift => new Vector2(5, 0);
+    public Vector2 VerticalShift => new Vector2(0, 0);
     public int DamagePower => 10;
-    public Point Coordinates { get; }
     public int Health { get; private set; }
 
 
-    public Hunter(Point coordinates)
+    public Hunter(Vector2 coordinates)
     {
-        Coordinates = coordinates;
+        Position = coordinates;
         Health = 100;
     }
 

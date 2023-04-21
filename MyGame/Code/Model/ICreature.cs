@@ -4,9 +4,14 @@ namespace MyGame.Model;
 
 public interface ICreature
 {
+    public string AssetName { get; }
     public string Name { get; }
-    public Point Coordinates { get; }
+    public Vector2 Position { get; set; }
     public int Health { get; }
+
+    public Vector2 VerticalShift { get; }
+
+    public Vector2 HorizontalShift { get; }
 
     public int DamagePower { get; }
 

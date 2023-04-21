@@ -2,17 +2,21 @@
 
 namespace MyGame.Model;
 
-public class Player : ICreature
+public class Goose : ICreature
 {
+    public string AssetName => "Goose";
     public string Name => "Goose";
+
+    public Vector2 Position { get;  set; }
+    public Vector2 HorizontalShift => new Vector2(5, 0);
+    public Vector2 VerticalShift => new Vector2(0, 5);
     public int DamagePower => 10;
-    public Point Coordinates { get; }
     public int Health { get; private set; }
 
 
-    public Player(Point coordinates)
+    public Goose(Vector2 coordinates)
     {
-        Coordinates = coordinates;
+        Position = coordinates;
         Health = 100;
     }
 
