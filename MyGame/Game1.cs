@@ -46,6 +46,7 @@ public class Game1 : Game
             Exit();
 
         _splashScreen.Update(gameTime);
+        _world.Update(gameTime);
 
         base.Update(gameTime);
     }
