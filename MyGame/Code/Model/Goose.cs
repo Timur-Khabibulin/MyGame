@@ -4,7 +4,7 @@ namespace MyGame.Model;
 
 public class Goose : ICreature
 {
-    public string AssetName => "Goose";
+    public string AssetName => ResourceNames.Goose;
     public string Name => "Goose";
 
     public Vector2 Position { get;  set; }

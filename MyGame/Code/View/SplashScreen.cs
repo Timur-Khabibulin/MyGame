@@ -11,11 +11,11 @@ public class SplashScreen : IComponent
 
     public SplashScreen(ContentManager content)
     {
-        var font = content.Load<SpriteFont>("ButtonFont");
+        var font = content.Load<SpriteFont>(ResourceNames.ButtonFont);
 
         PlayButton = new Button(new Point(10, 10),
             new Point(150, 50),
-            content.Load<Texture2D>("Button"))
+            content.Load<Texture2D>(ResourceNames.Button))
         {
             Text = new Text("Играть", font, Color.Gray)
         };
@@ -34,6 +34,5 @@ public class SplashScreen : IComponent
 
     private void OpenGame(object sender, System.EventArgs e)
     {
-        
     }
 }

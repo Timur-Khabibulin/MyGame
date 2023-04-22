@@ -18,7 +18,7 @@ public class World : IComponent
 
     public World(ContentManager content, int width, int height)
     {
-        ground = content.Load<Texture2D>("Ground");
+        ground = content.Load<Texture2D>(ResourceNames.Ground);
         this.width = width;
         this.height = height;
         groundHeight = height / 4;
