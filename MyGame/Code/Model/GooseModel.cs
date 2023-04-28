@@ -1,33 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MyGame.Code.Control;
 
 namespace MyGame.Model;
 
-public class Goose : ICreature
+public class GooseModel : ICreature
 {
-    public string AssetName => ResourceNames.Goose;
-    public string Name => "Goose";
-
-    public Vector2 Position { get;  set; }
+    public CreatureType Type => CreatureType.Goose;
+    public Vector2 Position { get; set; }
     public Vector2 HorizontalShift => new Vector2(5, 0);
     public Vector2 VerticalShift => new Vector2(0, 5);
     public int DamagePower => 10;
+    public double AttackPeriod => 0.1;
     public int Health { get; private set; }
 
 
-    public Goose(Vector2 coordinates)
+    public GooseModel(Vector2 coordinates)
     {
         Position = coordinates;
         Health = 100;
-    }
-
-    public void Act()
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    public void MakeDamage(ICreature conflictedObject)
-    {
-        conflictedObject.TakeDamage(DamagePower);
     }
 
     public void TakeDamage(int damage)
