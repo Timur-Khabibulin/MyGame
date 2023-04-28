@@ -12,7 +12,7 @@ public class Hunter : IControl
     public ICreature Entity { get; }
     public Rectangle Rectangle => new((int)Entity.Position.X, (int)Entity.Position.Y, texture.Width, texture.Height);
 
-    private Vector2 startPosition = new(1000, 450);
+    private Vector2 startPosition = new(1600, 720);
     private Texture2D texture;
     private List<Bullet> bullets;
     private ContentManager contentManager;
