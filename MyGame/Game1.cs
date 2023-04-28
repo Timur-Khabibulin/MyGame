@@ -8,7 +8,7 @@ namespace MyGame;
 
 public class Game1 : Game
 {
-    private GraphicsDeviceManager _graphics;
+    private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SplashScreen _splashScreen;
     private World _world;
