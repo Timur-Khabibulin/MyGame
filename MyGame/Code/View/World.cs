@@ -2,21 +2,19 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MyGame.Code.Control;
-using MyGame.Model;
+using MyGame.Code.Model;
+using MyGame.Code.Model.Entities;
 
-namespace MyGame;
+namespace MyGame.Code.View;
 
 public class World : IComponent
 {
-    private Texture2D ground;
+    private readonly Texture2D ground;
     private int width;
     private int height;
     private int groundHeight;
 
-    private List<IControl> entities;
-    private List<Bullet> bullets;
+    private readonly List<BaseCreature> creatures;
 
     public World(ContentManager content, int width, int height)
     {
@@ -24,11 +22,19 @@ public class World : IComponent
         this.width = width;
         this.height = height;
         groundHeight = height / 4;
-        entities = new List<IControl>();
-        bullets = new List<Bullet>();
 
-        entities.Add(new Player(content, bullets, width, height));
-        entities.Add(new Hunter(content, bullets, entities[0] as Player));
+        creatures = new List<BaseCreature>();
+        var player = new Goose(new Vector2(50, 10),
+            content,
+            new Vector2(50, 10),
+            new Vector2(width * 0.6f, height * 0.6f));
+
+        creatures.Add(player);
+
+        creatures.Add(new Hunter(player, new Vector2(1600, 720),
+            content,
+            new Vector2(0, 0),
+            new Vector2(width, height)));
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -38,22 +44,21 @@ public class World : IComponent
             width,
             groundHeight), Color.White);
 
-        foreach (var entity in entities)
-            entity.Draw(gameTime, spriteBatch);
-
-        foreach (var bullet in bullets)
+        foreach (var bullet in BulletsManager.Bullets)
             bullet.Draw(spriteBatch);
+
+        foreach (var creature in creatures)
+            creature.Draw(spriteBatch);
     }
 
     public void Update(GameTime gameTime)
     {
-        var keyboardState = Keyboard.GetState();
-        var mouseState = Mouse.GetState();
+        foreach (var creature in creatures)
+            creature.Update(gameTime);
 
-        foreach (var entity in entities)
-            entity.Update(gameTime, keyboardState, mouseState);
+        foreach (var bullet in BulletsManager.Bullets)
+            bullet.Update(gameTime);
 
-        foreach (var bullet in bullets)
-            bullet.Update();
+        BulletsManager.Update(creatures);
     }
 }

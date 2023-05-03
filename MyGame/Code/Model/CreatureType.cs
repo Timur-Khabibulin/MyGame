@@ -1,4 +1,4 @@
-﻿namespace MyGame.Model;
+﻿namespace MyGame.Code.Model;
 
 public enum CreatureType
 {

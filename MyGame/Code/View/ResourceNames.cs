@@ -1,6 +1,4 @@
-﻿using MyGame.Code.Control;
-
-namespace MyGame;
+﻿namespace MyGame;
 
 public static class ResourceNames
 {

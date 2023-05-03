@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 
-namespace MyGame.Code.Control;
+namespace MyGame.Code;
 
 public static class InputConfig
 {

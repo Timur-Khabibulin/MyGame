@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MyGame.Model;
+using MyGame.Code.View;
 
 namespace MyGame;
 
@@ -21,12 +21,6 @@ public class Game1 : Game
         _graphics.ToggleFullScreen();
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-    }
-
-    protected override void Initialize()
-    {
-        // TODO: Add your initialization logic here
-        base.Initialize();
     }
 
     protected override void LoadContent()
