@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MyGame.Code.Model.Entities;
+using MyGame.Code.View;
 
 namespace MyGame.Code.Model;
 
@@ -19,8 +20,8 @@ public abstract class BaseCreature : ISprite
     protected abstract Vector2 VerticalShift { get; }
     protected abstract int Health { get; set; }
     protected abstract double AttackPeriod { get; }
-
     protected readonly ContentManager contentManager;
+    protected readonly ProgressBar progressBar;
 
     protected BaseCreature(Vector2 position, ContentManager contentManager, string resourceName, Vector2 min,
         Vector2 max)
@@ -30,13 +31,16 @@ public abstract class BaseCreature : ISprite
         Max = max;
         Position = Vector2.Clamp(position, min, max);
         Texture = contentManager.Load<Texture2D>(resourceName);
+
+        progressBar = new ProgressBar(contentManager, 100, position, Texture.Width, 15);
     }
 
     protected bool IsCollided(Rectangle anotherViewArea) => ViewArea.Intersects(anotherViewArea);
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(Texture, Position, Color.White);
+        spriteBatch.Draw(Texture, Position + new Vector2(0, progressBar.Height), Color.White);
+        progressBar.Draw(spriteBatch);
     }
 
     public abstract void Update(GameTime gameTime);

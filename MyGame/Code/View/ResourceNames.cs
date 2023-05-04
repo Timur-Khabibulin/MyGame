@@ -7,6 +7,7 @@ public static class ResourceNames
     public static string Ground => "Ground";
     public static string Bullet => "Bullet";
     public static string Hunter => "Hunter";
+    public static string Health => "Health";
 
     public static string ButtonFont => "ButtonFont";
 }
