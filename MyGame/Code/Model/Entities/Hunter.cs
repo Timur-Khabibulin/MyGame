@@ -26,6 +26,7 @@ public sealed class Hunter : BaseCreature
     public override void Update(GameTime gameTime)
     {
         MakeShoot(gameTime);
+        progressBar.Update(Health, Position);
     }
 
     public override bool TakeDamage(Bullet bullet)
