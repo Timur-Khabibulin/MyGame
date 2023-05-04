@@ -14,7 +14,7 @@ public class World : IComponent
     private int height;
     private int groundHeight;
 
-    private readonly List<BaseCreature> creatures;
+    private readonly CreaturesManager creaturesManager;
 
     public World(ContentManager content, int width, int height)
     {
@@ -23,18 +23,12 @@ public class World : IComponent
         this.height = height;
         groundHeight = height / 4;
 
-        creatures = new List<BaseCreature>();
         var player = new Goose(new Vector2(50, 10),
             content,
             new Vector2(50, 10),
             new Vector2(width * 0.6f, height * 0.6f));
 
-        creatures.Add(player);
-
-        creatures.Add(new Hunter(player, new Vector2(1600, 720),
-            content,
-            new Vector2(0, 0),
-            new Vector2(width, height)));
+        creaturesManager = new CreaturesManager(content, player, this.width, this.height);
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -47,18 +41,19 @@ public class World : IComponent
         foreach (var bullet in BulletsManager.Bullets)
             bullet.Draw(spriteBatch);
 
-        foreach (var creature in creatures)
+        foreach (var creature in creaturesManager.Creatures)
             creature.Draw(spriteBatch);
     }
 
     public void Update(GameTime gameTime)
     {
-        foreach (var creature in creatures)
+        BulletsManager.Update(creaturesManager.Creatures);
+        creaturesManager.Update(gameTime);
+
+        foreach (var creature in creaturesManager.Creatures)
             creature.Update(gameTime);
 
         foreach (var bullet in BulletsManager.Bullets)
             bullet.Update(gameTime);
-
-        BulletsManager.Update(creatures);
     }
 }

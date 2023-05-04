@@ -33,7 +33,7 @@ public sealed class Goose : BaseCreature
         return false;
     }
 
-    public override void Update(GameTime gameTime)
+    protected override void UpdateAll(GameTime gameTime)
     {
         Move();
         Attack(gameTime);

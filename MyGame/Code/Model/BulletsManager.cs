@@ -19,7 +19,7 @@ public static class BulletsManager
         bullets.Add(bullet);
     }
 
-    public static void Update(List<BaseCreature> creatures)
+    public static void Update(IReadOnlyCollection<BaseCreature> creatures)
     {
         foreach (var bullet in bullets)
         {
@@ -28,14 +28,14 @@ public static class BulletsManager
         }
     }
 
-    private static void FindCandidateToDamage(List<BaseCreature> creatures, Bullet bullet)
+    private static void FindCandidateToDamage(IReadOnlyCollection<BaseCreature> creatures, Bullet bullet)
     {
         foreach (var creature in creatures)
         {
             if (bullet.Parent != CreatureType.Goose && creature.Type == CreatureType.Goose ||
                 bullet.Parent == CreatureType.Goose && creature.Type != CreatureType.Goose)
             {
-                if (creature.TakeDamage(bullet))
+                if (!creature.IsDead && creature.TakeDamage(bullet))
                     bullet.DeActivate();
             }
         }

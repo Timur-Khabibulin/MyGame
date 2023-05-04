@@ -15,6 +15,7 @@ public abstract class BaseCreature : ISprite
     public Vector2 Max { get; }
     public abstract CreatureType Type { get; }
     public abstract int DamagePower { get; }
+    public bool IsDead => Health <= 0;
 
     protected abstract Vector2 HorizontalShift { get; }
     protected abstract Vector2 VerticalShift { get; }
@@ -39,11 +40,19 @@ public abstract class BaseCreature : ISprite
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(Texture, Position + new Vector2(0, progressBar.Height), Color.White);
-        progressBar.Draw(spriteBatch);
+        if (!IsDead)
+        {
+            spriteBatch.Draw(Texture, Position + new Vector2(0, progressBar.Height), Color.White);
+            progressBar.Draw(spriteBatch);
+        }
     }
 
-    public abstract void Update(GameTime gameTime);
+    public void Update(GameTime gameTime)
+    {
+        if (!IsDead) UpdateAll(gameTime);
+    }
+
+    protected abstract void UpdateAll(GameTime gameTime);
 
     public abstract bool TakeDamage(Bullet bullet);
 }

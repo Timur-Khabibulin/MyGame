@@ -23,7 +23,7 @@ public sealed class Hunter : BaseCreature
         this.player = player;
     }
 
-    public override void Update(GameTime gameTime)
+    protected override void UpdateAll(GameTime gameTime)
     {
         MakeShoot(gameTime);
         progressBar.Update(Health, Position);
