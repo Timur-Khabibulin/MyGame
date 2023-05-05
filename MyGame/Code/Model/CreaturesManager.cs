@@ -34,8 +34,8 @@ public class CreaturesManager
         {
             creatures.Add(new Hunter(player, hunterStartPosition,
                 contentManager,
-                new Vector2(0, 0),
-                new Vector2(width, height)));
+                new Vector2(200, 0),
+                new Vector2(width-50, height)));
             timer = gameTime.TotalGameTime.TotalSeconds;
         }
     }
