@@ -37,7 +37,7 @@ public sealed class Goose : BaseCreature
     {
         Move();
         Attack(gameTime);
-        progressBar.Update(Health,Position);
+        progressBar.Update(Health, Position);
     }
 
     private void Move()

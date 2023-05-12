@@ -9,7 +9,7 @@ public class CreaturesManager
 {
     public IReadOnlyCollection<BaseCreature> Creatures => creatures;
 
-    private const int AppearancePeriod = 2;
+    private const double AppearancePeriod = 2;
     private readonly Vector2 hunterStartPosition = new(1600, 720);
 
     private readonly ContentManager contentManager;
@@ -35,7 +35,7 @@ public class CreaturesManager
             creatures.Add(new Hunter(player, hunterStartPosition,
                 contentManager,
                 new Vector2(200, 0),
-                new Vector2(width-50, height)));
+                new Vector2(width - 50, height)));
             timer = gameTime.TotalGameTime.TotalSeconds;
         }
     }
