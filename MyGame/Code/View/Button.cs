@@ -4,22 +4,22 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Vector2 = System.Numerics.Vector2;
 
-namespace MyGame;
+namespace MyGame.Code.View;
 
 public class Button : IComponent
 {
-    public event EventHandler OnClick;
-    public Text Text { get; set; }
+    public event Action OnClick;
+    public Text Text { get; init; }
+    public Point Size { get; }
+    public Point Position { get; }
 
-    private Point size;
-    private Point position;
     private Texture2D texture;
     private Rectangle rectangle;
 
     public Button(Point position, Point size, Texture2D texture)
     {
-        this.position = position;
-        this.size = size;
+        this.Position = position;
+        this.Size = size;
         this.texture = texture;
         rectangle = new Rectangle(position, size);
     }
@@ -30,8 +30,8 @@ public class Button : IComponent
 
         if (Text != null)
         {
-            var x = (rectangle.X + (rectangle.Width / 2)) - (Text.Font.MeasureString(Text.Value).X / 2);
-            var y = (rectangle.Y + (rectangle.Height / 2)) - (Text.Font.MeasureString(Text.Value).Y / 2);
+            var x = (rectangle.X + rectangle.Width / 2) - (Text.Font.MeasureString(Text.Value).X / 2);
+            var y = (rectangle.Y + rectangle.Height / 2) - (Text.Font.MeasureString(Text.Value).Y / 2);
 
             spriteBatch.DrawString(Text.Font, Text.Value, new Vector2(x, y), Text.TextColor);
         }
@@ -42,6 +42,6 @@ public class Button : IComponent
         var mouse = Mouse.GetState();
 
         if (rectangle.Contains(mouse.Position) && mouse.LeftButton == ButtonState.Pressed)
-            OnClick?.Invoke(this, EventArgs.Empty);
+            OnClick?.Invoke();
     }
 }
