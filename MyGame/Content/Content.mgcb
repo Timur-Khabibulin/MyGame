@@ -92,3 +92,10 @@
 /processorParam:TextureFormat=Color
 /build:Hunter.png
 
+#begin Puk.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Puk.spritefont;HeaderFont.spritefont
+
