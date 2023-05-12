@@ -15,9 +15,10 @@ public static class BulletsManager
     }
 
     public static void AddBullet(Bullet bullet)
-    {
-        bullets.Add(bullet);
-    }
+        => bullets.Add(bullet);
+
+    public static void RemoveAll()
+        => bullets.Clear();
 
     public static void Update(IReadOnlyCollection<BaseCreature> creatures)
     {
