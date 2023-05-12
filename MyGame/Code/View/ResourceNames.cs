@@ -10,4 +10,5 @@ public static class ResourceNames
     public static string Health => "Health";
 
     public static string ButtonFont => "ButtonFont";
+    public static string HeaderFont => "HeaderFont";
 }
