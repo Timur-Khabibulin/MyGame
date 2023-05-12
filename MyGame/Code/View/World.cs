@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MyGame.Code.Model;
 using MyGame.Code.Model.Entities;
 
@@ -9,10 +10,12 @@ namespace MyGame.Code.View;
 
 public class World : IComponent
 {
+    public event Action OnStopGame;
+
     private readonly Texture2D ground;
-    private int width;
-    private int height;
-    private int groundHeight;
+    private readonly int width;
+    private readonly int height;
+    private readonly int groundHeight;
 
     private readonly CreaturesManager creaturesManager;
 
@@ -55,5 +58,8 @@ public class World : IComponent
 
         foreach (var bullet in BulletsManager.Bullets)
             bullet.Update(gameTime);
+
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+            Keyboard.GetState().IsKeyDown(Keys.Escape)) OnStopGame?.Invoke();
     }
 }

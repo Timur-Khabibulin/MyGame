@@ -1,46 +1,55 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using MyGame.Code.Model;
 using MyGame.Code.View;
 
 namespace MyGame;
 
 public class Game1 : Game
 {
-    private readonly GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
-    private SplashScreen _splashScreen;
-    private World _world;
+    private readonly GraphicsDeviceManager graphics;
+    private SpriteBatch spriteBatch;
+    private SplashScreen splashScreen;
+    private World world;
+    private GameState gameState;
 
     public Game1()
     {
-        _graphics = new GraphicsDeviceManager(this);
-        _graphics.PreferredBackBufferWidth = 1920;
-        _graphics.PreferredBackBufferHeight = 1080;
-        _graphics.ToggleFullScreen();
+        graphics = new GraphicsDeviceManager(this);
+        graphics.PreferredBackBufferWidth = 1920;
+        graphics.PreferredBackBufferHeight = 1080;
+        graphics.ToggleFullScreen();
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        _splashScreen = new SplashScreen(Content);
-        _world = new World(Content,
-            _graphics.PreferredBackBufferWidth,
-            _graphics.PreferredBackBufferHeight);
+        splashScreen = new SplashScreen(Content);
+
+        splashScreen.OnStartGame += () => gameState = GameState.Game;
+        splashScreen.OnExit += Exit;
+
+        world = new World(Content,
+            graphics.PreferredBackBufferWidth,
+            graphics.PreferredBackBufferHeight);
+
+        world.OnStopGame += () => gameState = GameState.SplashScreen;
     }
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-            Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-
-        _splashScreen.Update(gameTime);
-        _world.Update(gameTime);
+        switch (gameState)
+        {
+            case GameState.SplashScreen:
+                splashScreen.Update(gameTime);
+                break;
+            case GameState.Game:
+                world.Update(gameTime);
+                break;
+        }
 
         base.Update(gameTime);
     }
@@ -49,12 +58,19 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        _spriteBatch.Begin();
+        spriteBatch.Begin();
 
-        _splashScreen.Draw(gameTime, _spriteBatch);
-        _world.Draw(gameTime, _spriteBatch);
+        switch (gameState)
+        {
+            case GameState.SplashScreen:
+                splashScreen.Draw(gameTime, spriteBatch);
+                break;
+            case GameState.Game:
+                world.Draw(gameTime, spriteBatch);
+                break;
+        }
 
-        _spriteBatch.End();
+        spriteBatch.End();
 
         base.Draw(gameTime);
     }
