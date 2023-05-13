@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MyGame.Code.View;
 
-namespace MyGame.Code.View;
+namespace MyGame.Code;
 
 public class SplashScreen : IComponent
 {
@@ -55,8 +56,5 @@ public class SplashScreen : IComponent
     {
         foreach (var component in components)
             component.Update(gameTime);
-
-        // if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-        //     Keyboard.GetState().IsKeyDown(Keys.Escape)) OnExit();
     }
 }

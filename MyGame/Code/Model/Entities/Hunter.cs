@@ -18,7 +18,7 @@ public sealed class Hunter : BaseCreature
     private readonly Goose player;
     private double shootTimer;
     private double moveTimer;
-    private Random random;
+    private readonly Random random;
 
     public Hunter(Goose player, Vector2 position, ContentManager contentManager, Vector2 min, Vector2 max) :
         base(position, contentManager, ResourceNames.Hunter, min, max)
@@ -50,7 +50,7 @@ public sealed class Hunter : BaseCreature
     {
         if (gameTime.TotalGameTime.TotalSeconds - shootTimer > AttackPeriod)
         {
-            BulletsManager.AddBullet(new Bullet(this, contentManager, player.Position.ToPoint()));
+            BulletsManager.AddBullet(new Bullet(this, contentManager, player.Position));
             shootTimer = gameTime.TotalGameTime.TotalSeconds;
         }
     }

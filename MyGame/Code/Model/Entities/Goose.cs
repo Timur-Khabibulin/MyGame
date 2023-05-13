@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Point = System.Drawing.Point;
 
 namespace MyGame.Code.Model.Entities;
 
@@ -33,47 +34,31 @@ public sealed class Goose : BaseCreature
         return false;
     }
 
-    protected override void UpdateAll(GameTime gameTime)
-    {
-        Move();
-        Attack(gameTime);
-        progressBar.Update(Health, Position);
-    }
-
-    private void Move()
-    {
-        var keyboardState = Keyboard.GetState();
-        var newPosition = Position;
-
-        if (keyboardState.IsKeyDown(InputConfig.Up))
-            newPosition -= VerticalShift;
-
-        if (keyboardState.IsKeyDown(InputConfig.Down))
-            newPosition += VerticalShift;
-
-        if (keyboardState.IsKeyDown(InputConfig.Left))
-            newPosition -= HorizontalShift;
-
-        if (keyboardState.IsKeyDown(InputConfig.Right))
-            newPosition += HorizontalShift;
-
-        Position = Vector2.Clamp(newPosition, Min, Max);
-    }
-
-    private void Attack(GameTime gameTime)
-    {
-        var mouseState = Mouse.GetState();
-
-        if (mouseState.LeftButton == ButtonState.Pressed)
-            MakeShoot(gameTime, mouseState);
-    }
-
-    private void MakeShoot(GameTime gameTime, MouseState mouseState)
+    public void Attack(GameTime gameTime, Vector2 direction)
     {
         if (gameTime.TotalGameTime.TotalSeconds - timer > AttackPeriod)
         {
-            BulletsManager.AddBullet(new Bullet(this, contentManager, mouseState.Position));
+            BulletsManager.AddBullet(new Bullet(this, contentManager, direction));
             timer = gameTime.TotalGameTime.TotalSeconds;
         }
+    }
+
+    public void MoveUp() => TryMove(Position - VerticalShift);
+
+    public void MoveDown() => TryMove(Position + VerticalShift);
+
+    public void MoveRight() => TryMove(Position + HorizontalShift);
+
+    public void MoveLeft() => TryMove(Position - HorizontalShift);
+
+    protected override void UpdateAll(GameTime gameTime)
+    {
+        progressBar.Update(Health, Position);
+    }
+
+    private void TryMove(Vector2 newPosition)
+    {
+        if (!IsDead)
+            Position = Vector2.Clamp(newPosition, Min, Max);
     }
 }

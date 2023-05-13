@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MyGame.Code;
 using MyGame.Code.Model;
 using MyGame.Code.View;
 
@@ -18,7 +19,7 @@ public class Game1 : Game
         graphics = new GraphicsDeviceManager(this);
         graphics.PreferredBackBufferWidth = 1920;
         graphics.PreferredBackBufferHeight = 1080;
-        graphics.ToggleFullScreen();
+        //graphics.ToggleFullScreen();
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -41,6 +42,7 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
+        Controller.Update(gameTime);
         switch (gameState)
         {
             case GameState.SplashScreen:

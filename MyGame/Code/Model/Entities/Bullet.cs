@@ -17,7 +17,7 @@ public class Bullet
     private readonly double rotation;
     private Vector2 position;
 
-    public Bullet(BaseCreature parent, ContentManager content, Point mousePosition)
+    public Bullet(BaseCreature parent, ContentManager content, Vector2 mousePosition)
     {
         IsActive = true;
         position = parent.Position;

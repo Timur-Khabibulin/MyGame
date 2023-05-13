@@ -34,7 +34,7 @@ public class World : IComponent
         this.height = height;
         groundHeight = height / 4;
 
-        AddCreatures();
+        RecreateWorld();
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -61,12 +61,6 @@ public class World : IComponent
 
     public void Update(GameTime gameTime)
     {
-        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-        {
-            if (GameOver) AddCreatures();
-            OnStopGame?.Invoke();
-        }
-        
         if (!GameOver)
         {
             BulletsManager.Update(creaturesManager.Creatures);
@@ -80,14 +74,28 @@ public class World : IComponent
         }
     }
 
-    private void AddCreatures()
+    private void Exit()
     {
+        if (GameOver) RecreateWorld();
+        OnStopGame?.Invoke();
+    }
+
+    private void RecreateWorld()
+    {
+        BulletsManager.RemoveAll();
+
         player = new Goose(new Vector2(50, 10),
             contentManager,
             new Vector2(50, 10),
             new Vector2(width * 0.6f, height * 0.6f));
 
+        Controller.OndOwn += player.MoveDown;
+        Controller.OnLeft += player.MoveLeft;
+        Controller.OnRight += player.MoveRight;
+        Controller.OnUp += player.MoveUp;
+        Controller.OnLeftMouseClick += player.Attack;
+        Controller.OnBack += Exit;
+
         creaturesManager = new CreaturesManager(contentManager, player, width, height);
-        BulletsManager.RemoveAll();
     }
 }
