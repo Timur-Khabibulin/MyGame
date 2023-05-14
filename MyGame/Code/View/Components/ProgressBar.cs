@@ -2,17 +2,19 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MyGame.Code.View;
+namespace MyGame.Code.View.Components;
 
-public class ProgressBar
+public class ProgressBar : IViewComponent
 {
     public int Width { get; }
     public int Height { get; }
 
-    private Rectangle viewPart;
-    private Vector2 position;
     private readonly Texture2D texture;
     private readonly double maxValue;
+
+    private Rectangle viewPart;
+    private Vector2 position;
+    private double value;
 
     public ProgressBar(ContentManager contentManager, double maxValue, Vector2 position, int width, int height)
     {
@@ -24,12 +26,17 @@ public class ProgressBar
         viewPart = new Rectangle(0, 0, width, height);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         => spriteBatch.Draw(texture, position, viewPart, Color.White);
 
-    public void Update(double currentValue, Vector2 currentPostion)
+    public void Update(GameTime gameTime)
     {
-        viewPart.Width = (int)(currentValue / maxValue * Width);
-        position = currentPostion;
+        viewPart.Width = (int)(value / maxValue * Width);
+    }
+
+    public void UpdateValue(double currentValue, Vector2 currentPosition)
+    {
+        value = currentValue;
+        position = currentPosition;
     }
 }

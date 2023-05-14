@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Vector2 = System.Numerics.Vector2;
 
-namespace MyGame.Code.View;
+namespace MyGame.Code.View.Components;
 
-public class Button : IComponent
+public class Button : IViewComponent
 {
     public event Action OnClick;
     public Text Text { get; init; }

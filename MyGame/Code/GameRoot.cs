@@ -1,25 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MyGame.Code;
+using MyGame.Code.Controller;
 using MyGame.Code.Model;
 using MyGame.Code.View;
 
-namespace MyGame;
+namespace MyGame.Code;
 
-public class Game1 : Game
+public class GameRoot : Game
 {
-    private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
     private SplashScreen splashScreen;
     private World world;
     private GameState gameState;
+    private Point resolution;
+    private Globals globals;
+    private WorldView worldView;
 
-    public Game1()
+    public GameRoot()
     {
-        graphics = new GraphicsDeviceManager(this);
-        graphics.PreferredBackBufferWidth = 1920;
-        graphics.PreferredBackBufferHeight = 1080;
-        //graphics.ToggleFullScreen();
+        var graphics = new GraphicsDeviceManager(this);
+        resolution = new Point(1920, 1080);
+        graphics.PreferredBackBufferWidth = resolution.X;
+        graphics.PreferredBackBufferHeight = resolution.Y;
+        graphics.ToggleFullScreen();
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -28,21 +31,21 @@ public class Game1 : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        globals = new Globals(Content, resolution);
         splashScreen = new SplashScreen(Content);
 
         splashScreen.OnStartGame += () => gameState = GameState.Game;
         splashScreen.OnExit += Exit;
 
-        world = new World(Content,
-            graphics.PreferredBackBufferWidth,
-            graphics.PreferredBackBufferHeight);
+        world = new World(globals);
+        worldView = new WorldView(globals, world);
 
         world.OnStopGame += () => gameState = GameState.SplashScreen;
     }
 
     protected override void Update(GameTime gameTime)
     {
-        Controller.Update(gameTime);
+        KeyboardController.Update(gameTime);
         switch (gameState)
         {
             case GameState.SplashScreen:
@@ -68,7 +71,7 @@ public class Game1 : Game
                 splashScreen.Draw(gameTime, spriteBatch);
                 break;
             case GameState.Game:
-                world.Draw(gameTime, spriteBatch);
+                worldView.Draw(gameTime, spriteBatch);
                 break;
         }
 

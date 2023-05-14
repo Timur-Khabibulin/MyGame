@@ -1,30 +1,42 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-using Point = System.Drawing.Point;
 
 namespace MyGame.Code.Model.Entities;
 
-public sealed class Goose : BaseCreature
+public sealed class Goose : ICreature, ICollidable
 {
-    public override CreatureType Type => CreatureType.Goose;
-    public override int DamagePower => 10;
+    public CreatureType Type => CreatureType.Goose;
+    public bool IsDead => Health <= 0;
+    public int DamagePower => 10;
+    public Vector2 Position { get; private set; }
+    public int Health { get; private set; }
+    public Rectangle ViewArea => new(Position.ToPoint(), globals.PlayerTextureSize);
 
-    protected override double AttackPeriod => 0.1;
-    protected override Vector2 HorizontalShift => new(5, 0);
-    protected override Vector2 VerticalShift => new(0, 5);
-    protected override int Health { get; set; }
+    private readonly double attackPeriod = 0.1;
+    private readonly Vector2 horizontalShift = new(5, 0);
+    private readonly Vector2 verticalShift = new(0, 5);
+    private readonly Globals globals;
 
     private double timer;
+    private readonly Vector2 minPosition;
+    private readonly Vector2 maxPosition;
 
-    public Goose(Vector2 position, ContentManager contentManager, Vector2 min, Vector2 max) :
-        base(position, contentManager, ResourceNames.Goose, min, max)
+    public Goose(Globals globals, Vector2 position)
     {
+        this.globals = globals;
         Health = 100;
+        minPosition = new Vector2(globals.Resolution.X * 0.02f, globals.Resolution.Y * 0.01f);
+        maxPosition = new Vector2(globals.Resolution.X * 0.8f, globals.Resolution.Y * 0.5f);
+        Position = Vector2.Clamp(position, minPosition, maxPosition);
     }
 
-    public override bool TakeDamage(Bullet bullet)
+    public void Act(GameTime gameTime)
     {
+    }
+
+    public bool TakeDamage(Bullet bullet)
+    {
+        if (IsDead) return false;
+
         if (IsCollided(bullet.ViewArea))
         {
             Health -= bullet.Damage <= Health ? bullet.Damage : Health;
@@ -36,29 +48,30 @@ public sealed class Goose : BaseCreature
 
     public void Attack(GameTime gameTime, Vector2 direction)
     {
-        if (gameTime.TotalGameTime.TotalSeconds - timer > AttackPeriod)
+        if (!IsDead)
         {
-            BulletsManager.AddBullet(new Bullet(this, contentManager, direction));
-            timer = gameTime.TotalGameTime.TotalSeconds;
+            if (gameTime.TotalGameTime.TotalSeconds - timer > attackPeriod)
+            {
+                BulletsManager.AddBullet(new Bullet(globals, this, direction));
+                timer = gameTime.TotalGameTime.TotalSeconds;
+            }
         }
     }
 
-    public void MoveUp() => TryMove(Position - VerticalShift);
+    public bool IsCollided(Rectangle anotherViewArea)
+        => ViewArea.Intersects(anotherViewArea);
 
-    public void MoveDown() => TryMove(Position + VerticalShift);
+    public void MoveUp() => TryMove(Position - verticalShift);
 
-    public void MoveRight() => TryMove(Position + HorizontalShift);
+    public void MoveDown() => TryMove(Position + verticalShift);
 
-    public void MoveLeft() => TryMove(Position - HorizontalShift);
+    public void MoveRight() => TryMove(Position + horizontalShift);
 
-    protected override void UpdateAll(GameTime gameTime)
-    {
-        progressBar.Update(Health, Position);
-    }
+    public void MoveLeft() => TryMove(Position - horizontalShift);
 
     private void TryMove(Vector2 newPosition)
     {
         if (!IsDead)
-            Position = Vector2.Clamp(newPosition, Min, Max);
+            Position = Vector2.Clamp(newPosition, minPosition, maxPosition);
     }
 }

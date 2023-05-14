@@ -20,16 +20,19 @@ public static class BulletsManager
     public static void RemoveAll()
         => bullets.Clear();
 
-    public static void Update(IReadOnlyCollection<BaseCreature> creatures)
+    public static void Update(IReadOnlyCollection<ICreature> creatures)
     {
         foreach (var bullet in bullets)
         {
             if (bullet.IsActive)
+            {
+                bullet.Update();
                 FindCandidateToDamage(creatures, bullet);
+            }
         }
     }
 
-    private static void FindCandidateToDamage(IReadOnlyCollection<BaseCreature> creatures, Bullet bullet)
+    private static void FindCandidateToDamage(IReadOnlyCollection<ICreature> creatures, Bullet bullet)
     {
         foreach (var creature in creatures)
         {

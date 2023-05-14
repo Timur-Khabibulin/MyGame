@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MyGame.Code.View;
+using MyGame.Code.View.Components;
 
-namespace MyGame.Code;
+namespace MyGame.Code.View
+;
 
-public class SplashScreen : IComponent
+public class SplashScreen : IViewComponent
 {
     public event Action OnExit
     {
@@ -21,7 +22,7 @@ public class SplashScreen : IComponent
         remove => playButton.OnClick -= value;
     }
 
-    private readonly List<IComponent> components = new();
+    private readonly List<IViewComponent> components = new();
     private readonly Button playButton;
     private readonly Button exitButton;
 

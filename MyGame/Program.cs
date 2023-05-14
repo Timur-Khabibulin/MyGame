@@ -1,2 +1,4 @@
-﻿using var game = new MyGame.Game1();
+﻿using MyGame.Code;
+
+using var game = new GameRoot();
 game.Run();

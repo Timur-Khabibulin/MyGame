@@ -1,4 +1,4 @@
-﻿namespace MyGame;
+﻿namespace MyGame.Code.View;
 
 public static class ResourceNames
 {

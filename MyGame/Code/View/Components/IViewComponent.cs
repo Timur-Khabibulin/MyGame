@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MyGame;
+namespace MyGame.Code.View.Components;
 
-public interface IComponent
+internal interface IViewComponent
 {
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 
     public void Update(GameTime gameTime);
-    
 }

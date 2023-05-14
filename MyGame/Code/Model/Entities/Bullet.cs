@@ -1,42 +1,35 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace MyGame.Code.Model.Entities;
 
 public class Bullet
 {
+    public Vector2 Position { get; private set; }
     public int Damage { get; }
-    public Rectangle ViewArea => new((int)position.X, (int)position.Y, texture.Width, texture.Height);
+    public Rectangle ViewArea => new(Position.ToPoint(), globals.BulletTextureSize);
     public CreatureType Parent { get; }
     public bool IsActive { get; private set; }
 
     private readonly float velocity = 10;
-    private readonly Texture2D texture;
     private readonly double rotation;
-    private Vector2 position;
+    private readonly Globals globals;
 
-    public Bullet(BaseCreature parent, ContentManager content, Vector2 mousePosition)
+
+    public Bullet(Globals globals, ICreature parent, Vector2 mousePosition)
     {
+        this.globals = globals;
         IsActive = true;
-        position = parent.Position;
+        Position = parent.Position;
         Damage = parent.DamagePower;
         Parent = parent.Type;
-        rotation = Math.Atan2(mousePosition.Y - position.Y, mousePosition.X - position.X);
-        texture = content.Load<Texture2D>(ResourceNames.Bullet);
+        rotation = Math.Atan2(mousePosition.Y - Position.Y, mousePosition.X - Position.X);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Update()
     {
         if (IsActive)
-            spriteBatch.Draw(texture, position, Color.White);
-    }
-
-    public void Update(GameTime gameTime)
-    {
-        if (IsActive)
-            position += new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * velocity;
+            Position += new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * velocity;
     }
 
     public void DeActivate() => IsActive = false;

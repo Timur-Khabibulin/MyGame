@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace MyGame.Code;
+namespace MyGame.Code.Controller;
 
-public static class Controller
+public static class KeyboardController
 {
     public static event Action OnLeft;
     public static event Action OnRight;
     public static event Action OnUp;
-    public static event Action OndOwn;
+    public static event Action OnDown;
 
     public static event Action OnBack;
 
@@ -22,7 +22,7 @@ public static class Controller
 
         if (keyboardState.IsKeyDown(InputConfig.Up)) OnUp?.Invoke();
 
-        if (keyboardState.IsKeyDown(InputConfig.Down)) OndOwn?.Invoke();
+        if (keyboardState.IsKeyDown(InputConfig.Down)) OnDown?.Invoke();
 
         if (keyboardState.IsKeyDown(InputConfig.Left)) OnLeft?.Invoke();
 
