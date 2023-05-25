@@ -8,11 +8,13 @@ public class Text
     public string Value { get; }
     public SpriteFont Font { get; }
     public Color TextColor { get; }
+    public Vector2 Size { get; }
 
     public Text(string value, SpriteFont font, Color textColor)
     {
         Value = value;
         Font = font;
         TextColor = textColor;
+        Size = font.MeasureString(value);
     }
 }

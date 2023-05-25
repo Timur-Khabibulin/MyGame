@@ -12,7 +12,10 @@ public class WorldView : IViewComponent
     private Texture2D hunterTexture;
     private Texture2D bullletTexture;
     private Texture2D groundTexture;
+    private Texture2D skyTexture;
+    private Texture2D sunsetTexture;
     private SpriteFont headerFont;
+    private SpriteFont textFont;
     private Text gameOverText;
 
     private Globals globals;
@@ -30,7 +33,7 @@ public class WorldView : IViewComponent
             world.PlayerPosition,
             hunterTexture.Width,
             15);
-        gameOverText = new Text("Вы проиграли", headerFont, Color.Red);
+        gameOverText = new Text("Вы проиграли", headerFont, new Color(97, 240, 232));
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -40,19 +43,16 @@ public class WorldView : IViewComponent
             DrawWorld(spriteBatch);
             DrawEnemies(gameTime, spriteBatch);
             DrawBullets(spriteBatch);
+            DrawPlayerInfo(spriteBatch);
         }
         else
         {
-            spriteBatch.DrawString(gameOverText.Font,
-                gameOverText.Value,
-                new Vector2(500, 500),
-                gameOverText.TextColor);
+            DrawWhenGameOver(spriteBatch);
         }
     }
 
     public void Update(GameTime gameTime)
     {
-        
     }
 
     private void LoadContent()
@@ -62,7 +62,10 @@ public class WorldView : IViewComponent
         hunterTexture = contentManager.Load<Texture2D>(ResourceNames.Hunter);
         bullletTexture = contentManager.Load<Texture2D>(ResourceNames.Bullet);
         groundTexture = contentManager.Load<Texture2D>(ResourceNames.Ground);
+        skyTexture = contentManager.Load<Texture2D>(ResourceNames.Sky);
+        sunsetTexture = contentManager.Load<Texture2D>(ResourceNames.Sunset);
         headerFont = contentManager.Load<SpriteFont>(ResourceNames.HeaderFont);
+        textFont = contentManager.Load<SpriteFont>(ResourceNames.ButtonFont);
 
         globals.HunterTextureSize = new Point(hunterTexture.Width, hunterTexture.Height);
         globals.PlayerTextureSize = new Point(playerTexture.Width, playerTexture.Height);
@@ -72,19 +75,14 @@ public class WorldView : IViewComponent
 
     private void DrawWorld(SpriteBatch spriteBatch)
     {
+        spriteBatch.Draw(skyTexture,
+            new Rectangle(0, 0, globals.Resolution.X, globals.Resolution.Y),
+            Color.White);
+
         spriteBatch.Draw(groundTexture, new Rectangle(0,
             3 * globals.Resolution.Y / 4,
             globals.Resolution.X,
             globals.Resolution.Y / 4), Color.White);
-    }
-
-    private void DrawBullets(SpriteBatch spriteBatch)
-    {
-        foreach (var bullet in BulletsManager.Bullets)
-        {
-            if (bullet.IsActive)
-                spriteBatch.Draw(bullletTexture, bullet.Position, Color.White);
-        }
     }
 
     private void DrawEnemies(GameTime gameTime, SpriteBatch spriteBatch)
@@ -102,5 +100,41 @@ public class WorldView : IViewComponent
                 progressBar.Draw(gameTime, spriteBatch);
             }
         }
+    }
+
+    private void DrawBullets(SpriteBatch spriteBatch)
+    {
+        foreach (var bullet in BulletsManager.Bullets)
+        {
+            if (bullet.IsActive)
+                spriteBatch.Draw(bullletTexture, bullet.Position, Color.White);
+        }
+    }
+
+    private void DrawPlayerInfo(SpriteBatch spriteBatch)
+    {
+        spriteBatch.DrawString(headerFont,
+            world.PlayerScore.ToString(),
+            new Vector2(1000, 900),
+            Color.White);
+    }
+
+    private void DrawWhenGameOver(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(sunsetTexture,
+            new Rectangle(0, 0, globals.Resolution.X, globals.Resolution.Y),
+            Color.White);
+
+        var textPos = new Vector2((globals.Resolution.X - gameOverText.Size.X) / 2,
+            (globals.Resolution.Y - gameOverText.Size.Y) / 2);
+        spriteBatch.DrawString(gameOverText.Font,
+            gameOverText.Value,
+            textPos,
+            gameOverText.TextColor);
+
+        spriteBatch.DrawString(textFont,
+            $"Ваш счет : {world.PlayerScore}",
+            new Vector2(textPos.X, textPos.Y + 200),
+            gameOverText.TextColor);
     }
 }

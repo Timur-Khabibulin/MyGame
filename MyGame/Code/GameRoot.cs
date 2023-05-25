@@ -32,7 +32,7 @@ public class GameRoot : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
         globals = new Globals(Content, resolution);
-        splashScreen = new SplashScreen(Content);
+        splashScreen = new SplashScreen(globals);
 
         splashScreen.OnStartGame += () => gameState = GameState.Game;
         splashScreen.OnExit += Exit;

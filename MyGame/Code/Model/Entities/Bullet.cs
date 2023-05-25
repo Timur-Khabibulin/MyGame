@@ -8,7 +8,7 @@ public class Bullet
     public Vector2 Position { get; private set; }
     public int Damage { get; }
     public Rectangle ViewArea => new(Position.ToPoint(), globals.BulletTextureSize);
-    public CreatureType Parent { get; }
+    public ICreature Parent { get; }
     public bool IsActive { get; private set; }
 
     private readonly float velocity = 10;
@@ -22,7 +22,7 @@ public class Bullet
         IsActive = true;
         Position = parent.Position;
         Damage = parent.DamagePower;
-        Parent = parent.Type;
+        Parent = parent;
         rotation = Math.Atan2(mousePosition.Y - Position.Y, mousePosition.X - Position.X);
     }
 

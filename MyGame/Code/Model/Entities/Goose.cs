@@ -7,6 +7,7 @@ public sealed class Goose : ICreature, ICollidable
     public CreatureType Type => CreatureType.Goose;
     public bool IsDead => Health <= 0;
     public int DamagePower => 10;
+    public int Score { get; private set; }
     public Vector2 Position { get; private set; }
     public int Health { get; private set; }
     public Rectangle ViewArea => new(Position.ToPoint(), globals.PlayerTextureSize);
@@ -45,6 +46,9 @@ public sealed class Goose : ICreature, ICollidable
 
         return false;
     }
+
+    public void IncreaseScore(int delta)
+        => Score += delta;
 
     public void Attack(GameTime gameTime, Vector2 direction)
     {

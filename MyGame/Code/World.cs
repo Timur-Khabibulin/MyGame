@@ -11,6 +11,7 @@ public class World
     public CreaturesManager CreaturesManager { get; private set; }
     public event Action OnStopGame;
     public Vector2 PlayerPosition => player.Position;
+    public int PlayerScore => player.Score;
     public bool GameOver => player.IsDead;
 
     private readonly Globals globals;

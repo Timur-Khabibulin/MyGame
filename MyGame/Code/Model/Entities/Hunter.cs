@@ -8,6 +8,7 @@ public sealed class Hunter : ICreature, ICollidable
     public CreatureType Type => CreatureType.Hunter;
     public bool IsDead => Health <= 0;
     public int DamagePower => 1;
+    public int Score => 0;
     public Vector2 Position { get; private set; }
     public int Health { get; private set; }
     public Rectangle ViewArea => new(Position.ToPoint(), globals.HunterTextureSize);
@@ -49,6 +50,10 @@ public sealed class Hunter : ICreature, ICollidable
         }
 
         return false;
+    }
+
+    public void IncreaseScore(int delta)
+    {
     }
 
     public bool IsCollided(Rectangle anotherViewArea)

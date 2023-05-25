@@ -36,11 +36,14 @@ public static class BulletsManager
     {
         foreach (var creature in creatures)
         {
-            if (bullet.Parent != CreatureType.Goose && creature.Type == CreatureType.Goose ||
-                bullet.Parent == CreatureType.Goose && creature.Type != CreatureType.Goose)
+            if (bullet.Parent.Type != CreatureType.Goose && creature.Type == CreatureType.Goose ||
+                bullet.Parent.Type == CreatureType.Goose && creature.Type != CreatureType.Goose)
             {
                 if (!creature.IsDead && creature.TakeDamage(bullet))
+                {
+                    bullet.Parent.IncreaseScore(bullet.Parent.DamagePower);
                     bullet.DeActivate();
+                }
             }
         }
     }
