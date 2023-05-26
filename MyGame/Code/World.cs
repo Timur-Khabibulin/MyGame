@@ -13,13 +13,15 @@ public class World
     public Vector2 PlayerPosition => player.Position;
     public int PlayerScore => player.Score;
     public bool GameOver => player.IsDead;
+    public Level GameLevel { get; private set; }
 
     private readonly Globals globals;
     private Goose player;
 
-    public World(Globals globals)
+    public World(Globals globals, Level level)
     {
         this.globals = globals;
+        GameLevel = level;
         RecreateWorld();
     }
 
@@ -32,6 +34,12 @@ public class World
         }
     }
 
+    public void LevelChanged(Level currentLevel)
+    {
+        GameLevel = currentLevel;
+        CreaturesManager.LevelChanged(GameLevel);
+    }
+
     private void RecreateWorld()
     {
         BulletsManager.RemoveAll();
@@ -42,10 +50,10 @@ public class World
         KeyboardController.OnLeft += player.MoveLeft;
         KeyboardController.OnRight += player.MoveRight;
         KeyboardController.OnUp += player.MoveUp;
-        KeyboardController.OnLeftMouseClick += player.Attack;
+        KeyboardController.OnLeftMousePress += player.Attack;
         KeyboardController.OnBack += Exit;
 
-        CreaturesManager = new CreaturesManager(globals, player);
+        CreaturesManager = new CreaturesManager(globals, player, GameLevel);
     }
 
     private void Exit()

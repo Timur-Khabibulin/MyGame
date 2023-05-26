@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MyGame.Code.Model;
 
 namespace MyGame.Code;
 
@@ -13,7 +14,7 @@ public class Globals
     public Point HunterTextureSize;
     public Point BulletTextureSize;
 
-    public Globals(ContentManager contentManager,Point resolution)
+    public Globals(ContentManager contentManager, Point resolution)
     {
         Resolution = resolution;
         ContentManager = contentManager;

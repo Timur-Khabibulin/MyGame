@@ -14,13 +14,14 @@ public class WorldView : IViewComponent
     private Texture2D groundTexture;
     private Texture2D skyTexture;
     private Texture2D sunsetTexture;
+    private Texture2D background2;
+    private Texture2D background3;
     private SpriteFont headerFont;
     private SpriteFont textFont;
-    private Text gameOverText;
 
-    private Globals globals;
-    private World world;
-    private ProgressBar progressBar;
+    private readonly Globals globals;
+    private readonly World world;
+    private readonly ProgressBar progressBar;
 
     public WorldView(Globals globals, World world)
     {
@@ -33,7 +34,6 @@ public class WorldView : IViewComponent
             world.PlayerPosition,
             hunterTexture.Width,
             15);
-        gameOverText = new Text("Вы проиграли", headerFont, new Color(97, 240, 232));
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -64,6 +64,8 @@ public class WorldView : IViewComponent
         groundTexture = contentManager.Load<Texture2D>(ResourceNames.Ground);
         skyTexture = contentManager.Load<Texture2D>(ResourceNames.Sky);
         sunsetTexture = contentManager.Load<Texture2D>(ResourceNames.Sunset);
+        background2 = contentManager.Load<Texture2D>(ResourceNames.BackGround2);
+        background3 = contentManager.Load<Texture2D>(ResourceNames.BackGround3);
         headerFont = contentManager.Load<SpriteFont>(ResourceNames.HeaderFont);
         textFont = contentManager.Load<SpriteFont>(ResourceNames.ButtonFont);
 
@@ -75,7 +77,14 @@ public class WorldView : IViewComponent
 
     private void DrawWorld(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(skyTexture,
+        var background = world.GameLevel switch
+        {
+            Level.Easy => skyTexture,
+            Level.Middle => background2,
+            Level.Hard => background3,
+        };
+
+        spriteBatch.Draw(background,
             new Rectangle(0, 0, globals.Resolution.X, globals.Resolution.Y),
             Color.White);
 
@@ -91,7 +100,7 @@ public class WorldView : IViewComponent
         {
             if (!creature.IsDead)
             {
-                var texture = creature.Type == CreatureType.Goose ? playerTexture : hunterTexture;
+                var texture = GetCreatureTexture(creature);
 
                 progressBar.UpdateValue(creature.Health, creature.Position);
                 progressBar.Update(gameTime);
@@ -101,6 +110,12 @@ public class WorldView : IViewComponent
             }
         }
     }
+
+    private Texture2D GetCreatureTexture(ICreature creature) => creature.Type switch
+    {
+        CreatureType.Goose => playerTexture,
+        CreatureType.Hunter => hunterTexture,
+    };
 
     private void DrawBullets(SpriteBatch spriteBatch)
     {
@@ -125,16 +140,14 @@ public class WorldView : IViewComponent
             new Rectangle(0, 0, globals.Resolution.X, globals.Resolution.Y),
             Color.White);
 
-        var textPos = new Vector2((globals.Resolution.X - gameOverText.Size.X) / 2,
-            (globals.Resolution.Y - gameOverText.Size.Y) / 2);
-        spriteBatch.DrawString(gameOverText.Font,
-            gameOverText.Value,
-            textPos,
-            gameOverText.TextColor);
 
-        spriteBatch.DrawString(textFont,
-            $"Ваш счет : {world.PlayerScore}",
-            new Vector2(textPos.X, textPos.Y + 200),
-            gameOverText.TextColor);
+        var text = new Text($"Ваш счет : {world.PlayerScore}", headerFont, new Color(97, 240, 232));
+        var textPos = new Vector2((globals.Resolution.X - text.Size.X) / 2,
+            (globals.Resolution.Y - text.Size.Y) / 2);
+
+        spriteBatch.DrawString(text.Font,
+            text.Value,
+            textPos,
+            text.TextColor);
     }
 }

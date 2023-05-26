@@ -30,15 +30,17 @@ public class GameRoot : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
+        var levelManager = new LevelManager();
 
         globals = new Globals(Content, resolution);
-        splashScreen = new SplashScreen(globals);
+        splashScreen = new SplashScreen(globals, levelManager);
 
         splashScreen.OnStartGame += () => gameState = GameState.Game;
         splashScreen.OnExit += Exit;
 
-        world = new World(globals);
+        world = new World(globals, levelManager.Level);
         worldView = new WorldView(globals, world);
+        levelManager.LevelChanged += world.LevelChanged;
 
         world.OnStopGame += () => gameState = GameState.SplashScreen;
     }

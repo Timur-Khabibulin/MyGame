@@ -7,14 +7,14 @@ public sealed class Hunter : ICreature, ICollidable
 {
     public CreatureType Type => CreatureType.Hunter;
     public bool IsDead => Health <= 0;
-    public int DamagePower => 1;
+    public int DamagePower { get; }
     public int Score => 0;
     public Vector2 Position { get; private set; }
     public int Health { get; private set; }
     public Rectangle ViewArea => new(Position.ToPoint(), globals.HunterTextureSize);
 
-    private readonly double attackPeriod = 0.5;
-    private readonly double movePeriod = 3;
+    private readonly double attackPeriod;
+    private readonly double movePeriod;
     private readonly ICreature player;
     private readonly Random random;
     private readonly Globals globals;
@@ -24,11 +24,15 @@ public sealed class Hunter : ICreature, ICollidable
     private Vector2 minPosition;
     private Vector2 maxPosition;
 
-    public Hunter(ICreature player, Globals globals, Vector2 position)
+    public Hunter(ICreature player, Globals globals, Vector2 position, double movePeriod, double attackPeriod,
+        int damagePower, int maxHealth)
     {
         this.globals = globals;
         this.player = player;
-        Health = 100;
+        this.movePeriod = movePeriod;
+        this.attackPeriod = attackPeriod;
+        DamagePower = damagePower;
+        Health = maxHealth;
         random = new Random();
         minPosition = new Vector2(globals.Resolution.X * 0.1f, 0);
         maxPosition = new Vector2(globals.Resolution.X * 0.9f, globals.Resolution.Y);

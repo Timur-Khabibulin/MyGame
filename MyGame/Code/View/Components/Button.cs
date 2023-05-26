@@ -20,6 +20,8 @@ public class Button : IViewComponent
 
     private Texture2D texture;
     private Rectangle rectangle;
+    private MouseState currentMouseState;
+    private MouseState previousMouseState;
 
     public Button(Point position, Point size, Texture2D texture)
     {
@@ -32,7 +34,6 @@ public class Button : IViewComponent
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        
         spriteBatch.Draw(texture, rectangle, BackgroundColor);
 
         if (Text != null)
@@ -46,9 +47,15 @@ public class Button : IViewComponent
 
     public void Update(GameTime gameTime)
     {
+        previousMouseState = currentMouseState;
+        currentMouseState = Mouse.GetState();
         var mouse = Mouse.GetState();
 
-        if (rectangle.Contains(mouse.Position) && mouse.LeftButton == ButtonState.Pressed)
-            OnClick?.Invoke();
+        if (rectangle.Contains(mouse.Position))
+        {
+            if (currentMouseState.LeftButton == ButtonState.Released
+                && previousMouseState.LeftButton == ButtonState.Pressed)
+                OnClick?.Invoke();
+        }
     }
 }

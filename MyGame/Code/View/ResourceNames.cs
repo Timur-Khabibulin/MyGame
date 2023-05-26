@@ -11,6 +11,8 @@ public static class ResourceNames
     public static string Sky => "SkyBackground";
     public static string SplashScreen => "SplashScreen";
     public static string Sunset => "Sunset2";
+    public static string BackGround2 => "BackGround2";
+    public static string BackGround3 => "BackGround3";
 
     public static string ButtonFont => "ButtonFont";
     public static string HeaderFont => "HeaderFont";

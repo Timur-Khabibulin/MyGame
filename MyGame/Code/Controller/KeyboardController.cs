@@ -13,8 +13,8 @@ public static class KeyboardController
 
     public static event Action OnBack;
 
-    public static event Action<GameTime, Vector2> OnLeftMouseClick;
-
+    public static event Action<GameTime, Vector2> OnLeftMousePress;
+    
     public static void Update(GameTime gameTime)
     {
         var keyboardState = Keyboard.GetState();
@@ -31,6 +31,7 @@ public static class KeyboardController
         if (keyboardState.IsKeyDown(InputConfig.Back)) OnBack?.Invoke();
 
         if (mouseState.LeftButton == ButtonState.Pressed)
-            OnLeftMouseClick?.Invoke(gameTime, mouseState.Position.ToVector2());
+            OnLeftMousePress?.Invoke(gameTime, mouseState.Position.ToVector2());
+        
     }
 }
