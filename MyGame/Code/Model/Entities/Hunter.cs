@@ -41,8 +41,17 @@ public sealed class Hunter : ICreature, ICollidable
 
     public void Act(GameTime gameTime)
     {
-        Move(gameTime);
-        MakeShoot(gameTime);
+        if (gameTime.TotalGameTime.TotalSeconds - moveTimer > movePeriod)
+        {
+            Move();
+            moveTimer = gameTime.TotalGameTime.TotalSeconds;
+        }
+
+        if (gameTime.TotalGameTime.TotalSeconds - shootTimer > attackPeriod)
+        {
+            MakeShoot();
+            shootTimer = gameTime.TotalGameTime.TotalSeconds;
+        }
     }
 
     public bool TakeDamage(Bullet bullet)
@@ -63,22 +72,12 @@ public sealed class Hunter : ICreature, ICollidable
     public bool IsCollided(Rectangle anotherViewArea)
         => ViewArea.Intersects(anotherViewArea);
 
-    private void MakeShoot(GameTime gameTime)
+    public void MakeShoot()
+        => BulletsManager.AddBullet(new Bullet(globals, this, player.Position));
+    
+    public void Move()
     {
-        if (gameTime.TotalGameTime.TotalSeconds - shootTimer > attackPeriod)
-        {
-            BulletsManager.AddBullet(new Bullet(globals, this, player.Position));
-            shootTimer = gameTime.TotalGameTime.TotalSeconds;
-        }
-    }
-
-    private void Move(GameTime gameTime)
-    {
-        if (gameTime.TotalGameTime.TotalSeconds - moveTimer > movePeriod)
-        {
-            var x = random.Next((int)minPosition.X, (int)maxPosition.X);
-            Position = new Vector2(x, Position.Y);
-            moveTimer = gameTime.TotalGameTime.TotalSeconds;
-        }
+        var x = random.Next((int)minPosition.X, (int)maxPosition.X);
+        Position = new Vector2(x, Position.Y);
     }
 }

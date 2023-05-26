@@ -6,7 +6,7 @@ namespace MyGame.Code.Model;
 public class LevelManager
 {
     public Level Level { get; private set; }
-    public event Action<Level> LevelChanged;
+    public event Action<Level> OnLevelChanged;
 
     public LevelManager()
     {
@@ -17,6 +17,6 @@ public class LevelManager
     {
         var count = Enum.GetValues<Level>().Length;
         Level = (Level)((int)(Level + 1) % count);
-        LevelChanged?.Invoke(Level);
+        OnLevelChanged?.Invoke(Level);
     }
 }

@@ -34,7 +34,7 @@ public class World
         }
     }
 
-    public void LevelChanged(Level currentLevel)
+    public void OnLevelChanged(Level currentLevel)
     {
         GameLevel = currentLevel;
         CreaturesManager.LevelChanged(GameLevel);

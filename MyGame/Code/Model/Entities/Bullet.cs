@@ -26,7 +26,7 @@ public class Bullet
         rotation = Math.Atan2(mousePosition.Y - Position.Y, mousePosition.X - Position.X);
     }
 
-    public void Update()
+    public void Move()
     {
         if (IsActive)
             Position += new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * velocity;

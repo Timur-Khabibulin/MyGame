@@ -14,7 +14,7 @@ public class Globals
     public Point HunterTextureSize;
     public Point BulletTextureSize;
 
-    public Globals(ContentManager contentManager, Point resolution)
+    public Globals(Point resolution, ContentManager contentManager = null)
     {
         Resolution = resolution;
         ContentManager = contentManager;

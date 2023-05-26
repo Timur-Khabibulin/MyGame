@@ -26,7 +26,7 @@ public static class BulletsManager
         {
             if (bullet.IsActive)
             {
-                bullet.Update();
+                bullet.Move();
                 FindCandidateToDamage(creatures, bullet);
             }
         }

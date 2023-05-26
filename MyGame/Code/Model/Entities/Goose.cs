@@ -6,7 +6,7 @@ public sealed class Goose : ICreature, ICollidable
 {
     public CreatureType Type => CreatureType.Goose;
     public bool IsDead => Health <= 0;
-    public int DamagePower => 10;
+    public int DamagePower { get; private set; }
     public int Score { get; private set; }
     public Vector2 Position { get; private set; }
     public int Health { get; private set; }
@@ -21,9 +21,10 @@ public sealed class Goose : ICreature, ICollidable
     private readonly Vector2 minPosition;
     private readonly Vector2 maxPosition;
 
-    public Goose(Globals globals, Vector2 position)
+    public Goose(Globals globals, Vector2 position, int damagePower=10)
     {
         this.globals = globals;
+        DamagePower = damagePower;
         Health = 100;
         minPosition = new Vector2(globals.Resolution.X * 0.02f, globals.Resolution.Y * 0.01f);
         maxPosition = new Vector2(globals.Resolution.X * 0.8f, globals.Resolution.Y * 0.5f);

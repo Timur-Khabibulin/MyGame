@@ -32,7 +32,7 @@ public class GameRoot : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         var levelManager = new LevelManager();
 
-        globals = new Globals(Content, resolution);
+        globals = new Globals(resolution, Content);
         splashScreen = new SplashScreen(globals, levelManager);
 
         splashScreen.OnStartGame += () => gameState = GameState.Game;
@@ -40,7 +40,7 @@ public class GameRoot : Game
 
         world = new World(globals, levelManager.Level);
         worldView = new WorldView(globals, world);
-        levelManager.LevelChanged += world.LevelChanged;
+        levelManager.OnLevelChanged += world.OnLevelChanged;
 
         world.OnStopGame += () => gameState = GameState.SplashScreen;
     }
